@@ -121,6 +121,7 @@ end
 
 local function recordWhisper(inbound, ...)
     local msg, from = ...;
+    from = FormatUserName(from);
     local db = db.history.whispers;
     local win = windows.active.whisper[from] or windows.active.chat[from] or windows.active.w2w[from];
     if(win and (lists.gm[from] or db.all or (db.friends and (lists.friends[from] or win.isBN)) or (db.guild and lists.guild[from]))) then
@@ -288,7 +289,6 @@ local function recordChannelChat(recordAs, ChannelType, ...)
         local history = getPlayerHistoryTable(recordAs);
         history.info.chat = true;
         history.info.channelNumber = channelNumber;
-        _G.test = history;
         table.insert(history, {
             event = ChannelType,
             channelName = recordAs,
