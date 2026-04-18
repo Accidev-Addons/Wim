@@ -405,16 +405,6 @@ local function getWindowBy(userName)
 end
 
 
---Clean up the frame's points and make sure the main point TOPLEFT,BOTTOMRIGHT is set
-function cleanPoints(win)
-                local x, y;
-                for i = 1, win:GetNumPoints() do
-                                local p1, parent, p2, tx, ty = win:GetPoint(i);
-                                _G.DEFAULT_CHAT_FRAME:AddMessage(p1..", ".._G.tostring(parent)..", "..p2..", "..tx..", "..ty);
-                end
-                _G.DEFAULT_CHAT_FRAME:AddMessage("    "..win:SafeGetLeft()..", "..win:SafeGetTop());
-end
-
 -- climb up inherritance tree and find parent window recursively.
 local function getParentMessageWindow(obj)
     if(not obj) then
@@ -1027,7 +1017,7 @@ local function instantiateWindow(obj)
 				self:Show();
                                 setWindowAsFadedIn(self);
 			end
-                        if(self:IsVisible() and not getVisibleChatFrameEditBox and not EditBoxInFocus and rules.autofocus) then
+                        if(self:IsVisible() and not getVisibleChatFrameEditBox() and not EditBoxInFocus and rules.autofocus) then
                                 self.widgets.msg_box:SetFocus();
                         end
 		end

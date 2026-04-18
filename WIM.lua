@@ -19,9 +19,6 @@ beta = false; -- flags current version as beta.
 debug = false; -- turn debugging on and off.
 useProtocol2 = false; -- test switch for new W2W Protocol. (Dev use only)
 
--- WOTLK check by CKKnight (we'll keep this around for now...)
-isPTR = select(4, _G.GetBuildInfo()) >= 30100;
-
 -- is Private Server?
 isPrivateServer = not (string.match(_G.GetCVar("realmList"), "worldofwarcraft.com$")
                         or string.match(_G.GetCVar("realmList"), "battle.net$")
@@ -322,10 +319,6 @@ function WIM.honorChatFrameEventFilter(event, ...)
         return filter, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12;
 end
 
-
-function WIM:EventHandler(event,...)
-        -- depricated - here for compatibility only
-end
 
 -- This is WIM's core event controler.
 function WIM:CoreEventHandler(event, ...)

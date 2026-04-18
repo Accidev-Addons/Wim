@@ -25,8 +25,7 @@ end
 
 local function processCommand(cmd)
     cmd = (cmd ~= "") and cmd or "options";
-    cmdList = cmdList or CommandList;
-    
+
     local args;
     cmd, args = string.match(cmd, "([^%s]*)%s*(.*)");
     cmd = string.upper(cmd);

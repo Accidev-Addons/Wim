@@ -32,17 +32,18 @@ workerFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 -- this function will analyze current flags and set WIM.curState appropriately.
 local function evaluateState()
-    if(select(2, IsInInstance()) == "arena") then
+    local _, instanceType = IsInInstance();
+    if(instanceType == "arena") then
         WIM.curState = "arena";
     elseif(flag_combat) then
         WIM.curState = "combat";
-    elseif(select(2, IsInInstance()) == "pvp") then
+    elseif(instanceType == "pvp") then
         -- inside battleground
         WIM.curState = "pvp";
-    elseif(select(2, IsInInstance()) == "raid") then
+    elseif(instanceType == "raid") then
         -- inside raid isntance
         WIM.curState = "raid";
-    elseif(select(2, IsInInstance()) == "party") then
+    elseif(instanceType == "party") then
         -- inside 5 man instance
         WIM.curState = "party";
     elseif(flag_resting) then

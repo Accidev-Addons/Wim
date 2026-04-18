@@ -38,7 +38,7 @@ Module:RegisterEvent("CHAT_MSG_SYSTEM");
 
 
 -- lessen broadcasts, target new users instead
- OnlineCache = {};
+local OnlineCache = {};
 local function getCache(tag)
     if(not OnlineCache[tag]) then
         OnlineCache[tag] = {};

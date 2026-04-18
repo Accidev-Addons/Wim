@@ -10,7 +10,6 @@
     <script file="TabHandler.lua" />
     <Script file="Hooks.lua" />
     <Script file="SlashHandler.lua" />
-    <Script file="Stewmat.lua" />
     <Script file="Compression.lua" />
     <Script file="Socket.lua" />
     <Script file="Clear.lua" />
