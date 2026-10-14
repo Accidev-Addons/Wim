@@ -91,7 +91,7 @@ local function formatRawURL(theURL)
         return "";
     else
         theURL = theURL:gsub('%%', '%%%%'); --make sure any %'s are escaped in order to preserve them.
-        return " |cff"..RGBPercentToHex(db.displayColors.webAddress.r, db.displayColors.webAddress.g, db.displayColors.webAddress.b).."|Hwim_url:"..theURL.."|h".."["..theURL.."]".."|h|r";
+        return " |cff"..RGBPercentToHex(db.displayColors.webAddress.r, db.displayColors.webAddress.g, db.displayColors.webAddress.b).."|HBNplayer::wim_url:"..theURL.."|h".."["..theURL.."]".."|h|r";
     end
 end
 

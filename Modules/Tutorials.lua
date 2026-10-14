@@ -29,16 +29,12 @@ local function varFriendly(var)
 end
 
 local theButton;
+local installOverrides;
 
-local _FlagTutorial = _G.FlagTutorial;
-function _G.FlagTutorial(id)
+local function flagTutorial(id)
     local tut = string.match(tostring(id), "^WIM(.+)");
-    if(tut) then
-        if(tut ~= varFriendly(L["WIM Update Available!"])) then
-            db.shownTutorials[tut] = true;
-        end
-    else
-        _FlagTutorial(id);
+    if(tut and tut ~= varFriendly(L["WIM Update Available!"])) then
+        db.shownTutorials[tut] = true;
     end
 end
 
@@ -85,6 +81,7 @@ local function displayTutorial(title, tutorial)
         theButton = theButton or createChangelogButton();
         _G["TUTORIAL_TITLEWIM"..var] = title;
         _G["TUTORIALWIM"..var] = tutorial;
+        installOverrides();
         _G.TutorialFrame_NewTutorial("WIM"..var);
     end
 end
@@ -100,8 +97,8 @@ end
 
 
 
-local _IsTutorialFlagged = _G.IsTutorialFlagged;
-function _G.IsTutorialFlagged(id)
+local _IsTutorialFlagged, _TutorialFrame_Update, _GetNextCompleatedTutorial, _GetPrevCompleatedTutorial;
+local function wimIsTutorialFlagged(id)
     if(string.match(id, "^[0-9]+$")) then
         --Blizzard Tutorial, resume...
         return _IsTutorialFlagged(id);
@@ -129,8 +126,7 @@ local DISPLAY_DATA = {
 local TUTORIAL_HISTORY = {};
 
 -- Tutorial Frame Hook used to implement WIM custom Tutorials.
-local _TutorialFrame_Update = _G.TutorialFrame_Update;
-function _G.TutorialFrame_Update(currentTutorial)
+local function wimTutorialFrame_Update(currentTutorial)
     if(theButton) then
         theButton:Hide();
     end
@@ -144,7 +140,7 @@ function _G.TutorialFrame_Update(currentTutorial)
         -- WIM Tutorial
         dPrint("WIM Tutorial ID: "..currentTutorial);
         setWIMorBlizzard(true);
-        _G.FlagTutorial(currentTutorial);
+        flagTutorial(currentTutorial);
 	_G.TutorialFrame.id = currentTutorial;
 
 	local displayData = DISPLAY_DATA[ currentTutorial ];
@@ -253,8 +249,7 @@ local function getHistoryIndex(id)
     return;
 end
 
-local _GetNextCompleatedTutorial = _G.GetNextCompleatedTutorial;
-function _G.GetNextCompleatedTutorial(id)
+local function wimGetNextCompleatedTutorial(id)
     if(string.match(id, "^[0-9]+$")) then
         return _GetNextCompleatedTutorial(id);
     else
@@ -263,14 +258,29 @@ function _G.GetNextCompleatedTutorial(id)
     end
 end
 
-local _GetPrevCompleatedTutorial = _G.GetPrevCompleatedTutorial;
-function _G.GetPrevCompleatedTutorial(id)
+local function wimGetPrevCompleatedTutorial(id)
     if(string.match(id, "^[0-9]+$")) then
         return _GetPrevCompleatedTutorial(id);
     else
         local i = getHistoryIndex(id);
         return i and TUTORIAL_HISTORY[i-1];
     end
+end
+
+local overridesInstalled;
+function installOverrides()
+    if(overridesInstalled) then
+        return;
+    end
+    overridesInstalled = true;
+    _IsTutorialFlagged = _G.IsTutorialFlagged;
+    _TutorialFrame_Update = _G.TutorialFrame_Update;
+    _GetNextCompleatedTutorial = _G.GetNextCompleatedTutorial;
+    _GetPrevCompleatedTutorial = _G.GetPrevCompleatedTutorial;
+    _G.IsTutorialFlagged = wimIsTutorialFlagged;
+    _G.TutorialFrame_Update = wimTutorialFrame_Update;
+    _G.GetNextCompleatedTutorial = wimGetNextCompleatedTutorial;
+    _G.GetPrevCompleatedTutorial = wimGetPrevCompleatedTutorial;
 end
 
 

@@ -594,16 +594,14 @@ hooksecurefunc("ChatEdit_ExtractTellTarget", CF_ExtractTellTarget);
 hooksecurefunc("ChatFrame_ReplyTell", function() replyTellTarget(true) end);
 hooksecurefunc("ChatFrame_ReplyTell2", function() replyTellTarget(false) end);
 
-local hookedSendChatMessage = _G.SendChatMessage;
-function _G.SendChatMessage(...)
-    if(select(2, ...) == "WHISPER") then
-        local win = Windows[FormatUserName(select(4, ...)) or "NIL"];
+hooksecurefunc("SendChatMessage", function(msg, chatType, language, target)
+    if(chatType == "WHISPER") then
+        local win = Windows[FormatUserName(target) or "NIL"];
         if(win) then
             win.msgSent = true;
         end
     end
-    hookedSendChatMessage(...);
-end
+end);
 
 -- global reference
 GetWhisperWindowByUser = getWhisperWindowByUser;

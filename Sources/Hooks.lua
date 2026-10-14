@@ -47,14 +47,11 @@ local function hookChatFrameEditBox(editBox)
 					WIM.EditBoxInFocus:SetText(theText);
 				end
 			end );
-        editBox.wimHighlightText = editBox.HighlightText;
-        editBox.HighlightText = function(self, theStart, theEnd)
+        hooksecurefunc(editBox, "HighlightText", function(self, theStart, theEnd)
 				if(WIM.EditBoxInFocus) then
 					WIM.EditBoxInFocus:HighlightText(theStart, theEnd);
-				else
-					self:wimHighlightText(theStart, theEnd);
 				end
-			end
+			end );
         Hooked_ChatFrameEditBoxes[editBox:GetName()] = true;
     end
 end
@@ -98,16 +95,17 @@ local registeredItemRef = {};
 function WIM.RegisterItemRefHandler(cmd, fun)
     registeredItemRef[cmd] = fun;
 end
-local ItemRefTooltip_SetHyperlink = ItemRefTooltip.SetHyperlink;
-ItemRefTooltip.SetHyperlink = function(self, link)
-    for cmd, fun in pairs(registeredItemRef) do
-        if(string.match(link, "^"..cmd..":")) then
-            fun(link);
-            return;
+hooksecurefunc("SetItemRef", function(link)
+    if(string.sub(link, 1, 10) == "BNplayer::") then
+        local data = string.sub(link, 11);
+        for cmd, fun in pairs(registeredItemRef) do
+            if(string.match(data, "^"..cmd..":")) then
+                fun(data);
+                return;
+            end
         end
     end
-    ItemRefTooltip_SetHyperlink(self, link);
-end
+end);
 
 
 

@@ -107,7 +107,7 @@ local function logBlockedEvent(eventItem)
     end
     if(arg11 and blockedEvents[arg11] == nil) then
         blockedEvents[arg11] = {event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11};
-        local msg = "|cffff7d0a"..L["WIM has blocked a message from %s."].." |r|cffff0000[|HWIMBLOCKED:"..arg11.."|h"..L["View Blocked Message"].."|h]|r"
+        local msg = "|cffff7d0a"..L["WIM has blocked a message from %s."].." |r|cffff0000[|HBNplayer::WIMBLOCKED:"..arg11.."|h"..L["View Blocked Message"].."|h]|r"
         _G.DEFAULT_CHAT_FRAME:AddMessage(msg:gsub("%%s", "|r[|Hplayer:"..arg2.."|h"..arg2.."|h]|cffff7d0a"));
         _G.PlaySound("TellMessage");
     end
