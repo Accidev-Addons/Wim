@@ -106,9 +106,7 @@ local function filterEmoticons(theMsg, smf)
     end
         
     -- put all the links back into the string...
-    for i=1, #LinkRepository do
-        theMsg = string.gsub(theMsg, "\001\004"..i.."", LinkRepository[i]);
-    end
+    theMsg = string.gsub(theMsg, "\001\004(%d+)", function(i) return LinkRepository[tonumber(i)]; end);
     
     -- clear table to be recycled by next process
     for key, _ in pairs(LinkRepository) do
